@@ -2,62 +2,67 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CodeMama - Question • Concepts • Visualize</title>
+<title>CodeMama - Unique Features</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#fcfcfc] text-black">
+<body class="bg-white text-black">
 <div class="max-w-6xl mx-auto p-4">
+<h1 class="font-black text-xl">codemama<span class="bg-black text-white px-2 py-0.5 rounded-full text-xs ml-2">UNIQUE FEATURES</span></h1>
+<div class="text-[11px]">Features no one else has: All Languages View + Mistakes + Interview Follow-ups</div>
 
-<div class="flex justify-between items-center">
-<h1 class="font-black text-xl tracking-tight">codemama</h1>
-<span class="text-[10px] border border-black rounded-full px-3 py-1">Question • Concepts • Visualize</span>
-</div>
-
-<div class="grid lg:grid-cols-5 gap-5 mt-6">
-<!-- CODE INPUT -->
+<div class="grid lg:grid-cols-5 gap-4 mt-4">
 <div class="lg:col-span-2">
-<div class="bg-white border-2 border-black rounded-[20px] p-3">
-<select id="topic" onchange="load()" class="w-full bg-black text-white rounded-full px-4 py-3 text-sm font-bold">
-<option value="fact">Factorial of Number</option>
-<option value="sum">Sum of N Numbers</option>
-<option value="prime">Prime Number Check</option>
-<option value="pal">Palindrome Check</option>
-<option value="fib">Fibonacci Series</option>
-<option value="max">Find Maximum</option>
-<option value="search">Linear Search</option>
-<option value="sort">Bubble Sort</option>
+<div class="border-2 border-black rounded-[20px] p-3">
+<select id="lang" onchange="convertLang()" class="w-full bg-black text-white rounded-full px-4 py-3 text-xs font-bold">
+<option value="python">Python</option>
+<option value="javascript" selected>JavaScript</option>
+<option value="java">Java</option>
+<option value="cpp">C++</option>
+<option value="c">C</option>
 </select>
-<textarea id="code" class="w-full h-[320px] mt-3 p-3 font-mono text-xs outline-none"></textarea>
-<button onclick="run()" class="w-full bg-black text-white rounded-full py-3 font-bold text-sm mt-2">VISUALIZE →</button>
-</div>
-</div>
-
-<!-- RIGHT SIDE - YOUR FLOW -->
-<div class="lg:col-span-3 space-y-4">
-
-<!-- 1. QUESTION ASKED IN -->
-<div class="bg-white border-2 border-black rounded-[20px] p-4">
-<div class="flex items-center gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span><h2 class="font-black text-sm">Question Asked In</h2></div>
-<div id="asked" class="mt-3"></div>
+<textarea id="code" class="w-full h-[300px] mt-3 p-3 font-mono text-xs border border-gray-200 rounded-xl"></textarea>
+<button onclick="run()" class="w-full bg-black text-white rounded-full py-3 font-bold mt-2">RUN WITH NEW FEATURES →</button>
+<button onclick="toggleAllLang()" class="w-full border-2 border-black rounded-full py-2 text-xs font-bold mt-2">✨ NEW: Show Same Logic in All 5 Languages</button>
 </div>
 
-<!-- 2. CONCEPTS EXPLAINED -->
-<div class="bg-white border-2 border-black rounded-[20px] p-4">
-<div class="flex items-center gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span><h2 class="font-black text-sm">Concepts Explained</h2></div>
-<div id="concepts" class="mt-3"></div>
+<!-- UNIQUE FEATURE 1: ALL LANGUAGES VIEW -->
+<div id="allLangView" class="hidden mt-3 border-2 border-black rounded-[20px] p-3 bg-yellow-50">
+<h3 class="font-black text-xs">🌐 Same Logic in All Languages (Unique)</h3>
+<div id="allLangContent" class="mt-2 text-[11px] font-mono space-y-2"></div>
 </div>
 
-<!-- 3. VISUALIZE -->
+</div>
+
+<div class="lg:col-span-3 space-y-3">
+
+<div class="border-2 border-black rounded-[20px] p-4 bg-yellow-50">
+<div class="flex gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span><h2 class="font-black text-sm">Question Asked In</h2></div>
+<div id="asked" class="mt-3 text-xs"></div>
+</div>
+
+<div class="border-2 border-black rounded-[20px] p-4 bg-blue-50">
+<div class="flex gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span><h2 class="font-black text-sm">Concepts Explained</h2></div>
+<div id="concepts" class="mt-3 text-xs leading-6"></div>
+</div>
+
+<!-- UNIQUE FEATURE 2: MISTAKES -->
+<div class="border-2 border-red-500 rounded-[20px] p-4 bg-red-50">
+<div class="flex gap-2"><span class="bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">!</span><h2 class="font-black text-sm">⚠️ Common Mistakes Students Make (Unique Feature)</h2></div>
+<div id="mistakes" class="mt-3 text-xs leading-6"></div>
+</div>
+
+<!-- UNIQUE FEATURE 3: INTERVIEW FOLLOW-UPS -->
+<div class="border-2 border-purple-500 rounded-[20px] p-4 bg-purple-50">
+<div class="flex gap-2"><span class="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">?</span><h2 class="font-black text-sm">🎤 Interviewer Follow-up Questions (Unique)</h2></div>
+<div id="followups" class="mt-3 text-xs leading-6"></div>
+</div>
+
 <div class="bg-black text-white rounded-[20px] p-4">
-<div class="flex items-center gap-2"><span class="bg-white text-black w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span><h2 class="font-black text-sm">Visualize Execution</h2><span id="cnt" class="ml-auto text-xs border border-white rounded-full px-3 py-1"></span></div>
+<div class="flex gap-2 items-center"><span class="bg-white text-black w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span><h2 class="font-black text-sm">Visualize</h2><span id="cnt" class="ml-auto text-xs border border-white rounded-full px-3 py-1"></span></div>
 <div id="mem" class="flex flex-wrap gap-2 mt-4"></div>
-<div id="out" class="bg-[#111] border border-gray-800 rounded-xl p-3 font-mono text-xs mt-3 text-green-400 min-h-12"></div>
-<div class="flex gap-2 mt-3">
-<button onclick="prev()" class="bg-white text-black rounded-full w-9 h-9 font-bold">‹</button>
-<button onclick="next()" class="bg-white text-black rounded-full w-9 h-9 font-bold">›</button>
-<button onclick="auto()" class="border border-white rounded-full px-4 text-xs">Auto Play</button>
-</div>
-<div id="steps" class="mt-4 space-y-1 max-h-44 overflow-auto"></div>
+<div id="out" class="bg-[#111] border border-gray-800 rounded-xl p-3 font-mono text-xs mt-3 text-green-400 min-h-10"></div>
+<div class="flex gap-2 mt-3"><button onclick="prev()" class="bg-white text-black rounded-full w-9 h-9">‹</button><button onclick="next()" class="bg-white text-black rounded-full w-9 h-9">›</button><button onclick="auto()" class="border border-white rounded-full px-4 text-xs">Auto</button></div>
+<div id="steps" class="mt-3 space-y-1 max-h-40 overflow-auto text-xs font-mono"></div>
 </div>
 
 </div>
@@ -65,104 +70,53 @@
 </div>
 
 <script>
-const DATA={
-fact:{
-code:`let n = 5
-let fact = 1
-for(let i=1; i<=n; i++){
-  fact = fact * i
-}
-console.log(fact)`,
-asked:`<div class="space-y-2">
-<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS NQT</b> • Coding Round</span><span class="text-[10px] bg-black text-white rounded-full px-2 py-1">50k+ times</span></div>
-<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>Infosys SP</b> • Interview</span><span class="text-[10px] border rounded-full px-2 py-1">Top 10 Q</span></div>
-<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>Wipro Elite</b> • Every year</span><span class="text-[10px] border rounded-full px-2 py-1">Must Know</span></div>
-</div>`,
-concepts:`<div class="space-y-3 text-xs leading-6">
-<div><b>🔁 Loop (for i=1 to n):</b> Repeats same calculation. Instead of writing fact*1, fact*2, fact*3 manually, loop does it.</div>
-<div><b>📦 Accumulator (fact variable):</b> fact starts as 1. Each iteration: fact = fact * i. So 1→1→2→6→24→120. It accumulates result.</div>
-<div><b>🎯 Why fact=1 not 0:</b> If fact=0, 0*anything=0. So we start with 1.</div>
-<div class="bg-black text-white rounded-full px-3 py-1 inline-block text-[11px]">Practice: Fibonacci, Power of number, Sum of factorial</div>
-</div>`
-},
-sum:{
-code:`let n = 5\nlet sum = 0\nfor(let i=1; i<=n; i++){\n  sum = sum + i\n}\nconsole.log(sum)`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS NQT</b> • First Question</span><span class="text-[10px] bg-black text-white rounded-full px-2 py-1">Most Asked</span></div>`,
-concepts:`<div class="space-y-2 text-xs leading-6"><div><b>Loop:</b> Adds 1+2+3+4+5</div><div><b>sum variable:</b> Starts 0, grows each time</div></div>`
-},
-prime:{
-code:`let n = 7\nlet prime = true\nfor(let i=2; i<n; i++){\n  if(n % i == 0) prime = false\n}\nconsole.log(prime)`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS Digital</b></span><span class="text-[10px] bg-black text-white rounded-full px-2">High</span></div>`,
-concepts:`<div class="text-xs leading-6"><b>Modulo %:</b> n%i==0 means divisible<br><b>Flag:</b> prime true until we find divisor</div>`
-},
-pal:{
-code:`let s = "madam"\nlet rev = s.split('').reverse().join('')\nconsole.log(s==rev)`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS + Infosys</b></span><span class="text-[10px] bg-black text-white rounded-full px-2">Top 5</span></div>`,
-concepts:`<div class="text-xs leading-6"><b>Reverse:</b> Reverse string<br><b>Compare:</b> If same, palindrome</div>`
-},
-fib:{
-code:`let n=6\nlet a=0,b=1\nfor(let i=0;i<n;i++){\n  console.log(a)\n  let t=a+b; a=b; b=t\n}`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS NQT</b> • Top 3</span><span class="text-[10px] bg-black text-white rounded-full px-2">Must Know</span></div>`,
-concepts:`<div class="text-xs leading-6"><b>Two variables a,b:</b> Holds last two fib numbers<br><b>Swap:</b> t=a+b moves sequence forward</div>`
-},
-max:{
-code:`let arr=[3,9,2,15,6]\nlet max=arr[0]\nfor(let x of arr){\n  if(x>max) max=x\n}\nconsole.log(max)`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS + Wipro</b></span><span class="text-[10px] bg-black text-white rounded-full px-2">High</span></div>`,
-concepts:`<div class="text-xs leading-6"><b>Array traversal:</b> Check each element<br><b>Max logic:</b> If x bigger than current max, update</div>`
-},
-search:{
-code:`let arr=[2,4,6,8]\nlet target=6\nlet found=-1\nfor(let i=0;i<arr.length;i++){\n  if(arr[i]==target) found=i\n}\nconsole.log(found)`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>Infosys</b> • Search</span><span class="text-[10px] bg-black text-white rounded-full px-2">Common</span></div>`,
-concepts:`<div class="text-xs leading-6"><b>Linear search:</b> Check each index one by one</div>`
-},
-sort:{
-code:`let arr=[5,2,9,1]\nfor(let i=0;i<arr.length;i++){\n for(let j=0;j<arr.length-1;j++){\n  if(arr[j]>arr[j+1]){\n   let t=arr[j]; arr[j]=arr[j+1]; arr[j+1]=t\n  }\n }\n}\nconsole.log(arr)`,
-asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS</b> • Sorting</span><span class="text-[10px] bg-black text-white rounded-full px-2">Medium</span></div>`,
-concepts:`<div class="text-xs leading-6"><b>Bubble sort:</b> Compare neighbours and swap if wrong order</div>`
-}
+const LANG_TEMPLATES={
+python:{fact:`n = 5\nfact = 1\nfor i in range(1, n+1):\n    fact = fact * i\nprint(fact)`},
+javascript:{fact:`let n = 5;\nlet fact = 1;\nfor(let i=1; i<=n; i++){\n  fact = fact * i;\n}\nconsole.log(fact);`},
+java:{fact:`int n=5;\nint fact=1;\nfor(int i=1; i<=n; i++){\n  fact=fact*i;\n}\nSystem.out.println(fact);`},
+cpp:{fact:`int n=5;\nint fact=1;\nfor(int i=1; i<=n; i++){\n  fact=fact*i;\n}\ncout << fact;`},
+c:{fact:`int n=5;\nint fact=1;\nfor(int i=1; i<=n; i++){\n  fact=fact*i;\n}\nprintf("%d", fact);`}
 };
-
-function load(){
-let k=document.getElementById('topic').value;
-document.getElementById('code').value=DATA[k].code;
-document.getElementById('asked').innerHTML=DATA[k].asked;
-document.getElementById('concepts').innerHTML=DATA[k].concepts;
-run();
+function convertLang(){
+let lang=document.getElementById('lang').value;
+document.getElementById('code').value=LANG_TEMPLATES[lang].fact;
 }
-load();
+convertLang();
+
+function toggleAllLang(){
+let view=document.getElementById('allLangView');
+view.classList.toggle('hidden');
+document.getElementById('allLangContent').innerHTML=`
+<div><b>Python:</b><br>n=5<br>fact=1<br>for i in range(1,n+1):<br>  fact=fact*i</div>
+<div class="border-t pt-2"><b>JavaScript:</b><br>let n=5; let fact=1; for(let i=1;i<=n;i++){ fact=fact*i; }</div>
+<div class="border-t pt-2"><b>Java:</b><br>int n=5; int fact=1; for(int i=1;i<=n;i++){ fact=fact*i; }</div>
+<div class="border-t pt-2"><b>C++:</b><br>int n=5; int fact=1; for(int i=1;i<=n;i++){ fact=fact*i; }</div>
+<div class="border-t pt-2"><b>C:</b><br>int n=5; int fact=1; for(int i=1;i<=n;i++){ fact=fact*i; }</div>
+`;
+}
 
 let trace=[], cur=0;
 function run(){
 let code=document.getElementById('code').value;
+let lang=document.getElementById('lang').value;
+let lower=code.toLowerCase();
 let mem={}, out=[], tr=[];
-function log(l){ tr.push({line:l, mem:{...mem}, out:[...out]}); }
+function log(line){ tr.push({line:line.slice(0,100), mem:{...mem}, out:[...out]}); }
 try{
-let exec=code.replace(/let\s+/g,'').replace(/const\s+/g,'')
-.replace(/console\.log\((.*?)\)/g,(m,p)=>`out.push(${p}); log("print ${p}");`)
-.split(';').map(s=>{
-s=s.trim(); if(!s) return '';
-if(s.startsWith('for')||s.startsWith('if')||s.startsWith('else')||s=='{'||s=='}') return s+'; log("'+s.replace(/"/g,"'")+'");';
-if(s.includes('=') && !s.includes('==')){
-let v=s.split('=')[0].trim().split(' ').pop();
-return `${s}; try{ mem["${v}"]=${v}; }catch{} log("${s.replace(/"/g,"'")}");`;
+let jsCode=code.replace(/System\.out\.println/g,'console.log').replace(/cout\s*<<\s*/g,'console.log(').replace(/printf.*\(.*?,/g,'console.log(').replace(/print\(/g,'console.log(').replace(/int\s+/g,'let ').replace(/let\s+let\s+/g,'let ').replace(/for\s*\(\s*int/g,'for(let');
+let lines=jsCode.split('\n'); let finalJS='';
+for(let l of lines){
+let t=l.trim(); if(!t || t=='{' || t=='}' || t.includes('main')) continue;
+if(t.includes('for') && t.includes('range')){
+let m=t.match(/for\s+(\w+)\s+in\s+range\((\d+),(\d+)\)/);
+if(m){ finalJS+=`for(let ${m[1]}=${m[2]}; ${m[1]}<${m[3]}; ${m[1]}++){ log("for ${m[1]}");\n`; continue; }
+let m2=t.match(/for\s+(\w+)\s+in\s+range\((\d+)\)/);
+if(m2){ finalJS+=`for(let ${m2[1]}=0; ${m2[1]}<${m2[2]}; ${m2[1]}++){ log("for ${m2[1]}");\n`; continue; }
 }
-return s+'; log("'+s.replace(/"/g,"'")+'");';
-}).join('\n');
-new Function('mem','out','log', exec)(mem,out,log);
-}catch(e){ log("Error "+e.message); }
-trace=tr; cur=0; render();
-}
-function render(){
-if(!trace.length) return;
-let s=trace[cur];
-document.getElementById('cnt').innerText=`${cur+1}/${trace.length}`;
-document.getElementById('mem').innerHTML=Object.entries(s.mem).map(([k,v])=>`<div class="bg-[#111] border border-gray-800 rounded-xl px-4 py-2"><div class="text-[9px] text-gray-500">${k}</div><div class="font-bold font-mono">${Array.isArray(v)?'['+v+']':v}</div></div>`).join('')||'<span class="text-xs text-gray-500">Start</span>';
-document.getElementById('out').innerHTML=s.out.length? s.out.map(o=>`> ${Array.isArray(o)?'['+o+']':o}`).join('<br>') : '> ...';
-document.getElementById('steps').innerHTML=trace.map((t,i)=>`<div onclick="cur=${i};render()" class="cursor-pointer flex justify-between px-3 py-2 rounded-full text-xs ${i==cur?'bg-white text-black':'border border-gray-800 text-gray-400'}"><span>${i+1}. ${t.line}</span><span>${Object.entries(t.mem).slice(0,2).map(([k,v])=>`${k}=${v}`).join(' ')}</span></div>`).join('');
-}
-function prev(){if(cur>0){cur--; render();}}
-function next(){if(cur<trace.length-1){cur++; render();}}
-function auto(){let i=0; let tm=setInterval(()=>{cur=i; render(); i++; if(i>=trace.length) clearInterval(tm);},700);}
-</script>
-</body>
-</html>
+if(t.startsWith('for')){ finalJS+=`${t} { log("${t.replace(/"/g,"'")}");\n`; continue; }
+if(t.includes('=')){
+let varName=t.split('=')[0].trim().split(' ').pop().replace(';','');
+if(varName && varName.length<20 && !['if','for','=='].some(k=>t.includes(k))){
+finalJS+=`${t}; try{ mem["${varName}"]=${varName}; }catch{} log("${t.replace(/"/g,"'")}");\n`;
+}else finalJS+=`${t}; log("${t.replace(/"/g,"'")}");\n`;
+}else if(t.includes('console.log')){ finalJS+=`${t}; log("${t.replace(/"/g,"'
