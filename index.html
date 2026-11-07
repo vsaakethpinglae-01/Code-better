@@ -3,99 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>code better tutor</title>
+<title>code better tutor - ANY problem</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,system-ui;background:#fdfbf5;padding:14px}
 .top{font-weight:900;font-size:22px}.sub{font-size:11px;color:#888;margin-bottom:12px}
-.wrap{border:2.5px solid #111;border-radius:18px;padding:10px;background:#fff;display:grid;grid-template-columns:1fr 1.6fr;gap:10px}
+.wrap{border:2.5px solid #111;border-radius:18px;padding:10px;background:#fff;display:grid;grid-template-columns:1.2fr 1fr;gap:10px}
 .left{border:2.5px solid #111;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.left textarea{width:100%;height:360px;border:0;padding:12px;font-family:monospace;font-size:12px;outline:none}
+.left textarea{width:100%;height:440px;border:0;padding:12px;font-family:monospace;font-size:12.5px;outline:none;white-space:pre}
 .run{margin:10px;background:#111;color:#fff;border-radius:22px;padding:12px;border:0;font-weight:800;cursor:pointer}
 .card{border:2.5px solid #111;border-radius:12px;padding:12px;margin-bottom:10px}
 .c1{background:#fef9c3}.c2{background:#eff6ff}.c3{background:#111;color:#fff}
-.row{display:flex;gap:8px;margin:10px 0}.b{border:2px solid #555;color:#fff;padding:8px 14px;border-radius:8px;font-weight:700;font-size:11px}
-.ctrls{display:flex;gap:8px;margin:8px 0}.ctrls button{background:#222;color:#fff;border:1px solid #444;width:32px;height:32px;border-radius:50%;cursor:pointer}
-.s{background:#222;border-radius:8px;padding:8px 10px;margin-top:6px;font-size:10px}.s.on{background:#fff;color:#111;font-weight:700}
-@media(max-width:700px){.wrap{grid-template-columns:1fr}}
+.out{background:#1e1e1e;border-radius:10px;padding:10px;font-family:monospace;font-size:12px;min-height:40px;white-space:pre-wrap}
+.row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}.b{border:2px solid #555;color:#fff;padding:8px 14px;border-radius:8px;font-weight:700;font-size:11px}
+.ctrls{display:flex;gap:8px;margin:8px 0}.ctrls button{background:#222;color:#fff;border:1px solid #444;height:32px;border-radius:20px;padding:0 14px;cursor:pointer}
+.s{background:#222;border-radius:8px;padding:8px 10px;margin-top:6px;font-size:11px}.s.on{background:#fff;color:#111;font-weight:700}
+@media(max-width:800px){.wrap{grid-template-columns:1fr}}
 </style>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
 </head>
 <body>
 <div class="top">code better tutor</div>
-<div class="sub">visualize any code - works for all questions</div>
+<div class="sub">visualize any code - works for all questions - UNIVERSAL</div>
 <div class="wrap">
 <div class="left">
-<textarea id="code">nums = [2,7,11,15]
-target = 9
+<textarea id="code">s = "abcabcbb"
+def length_of_longest(s):
+    seen = {}
+    left = 0
+    max_len = 0
+    for right in range(len(s)):
+        if s[right] in seen and seen[s[right]] >= left:
+            left = seen[s[right]] + 1
+        seen[s[right]] = right
+        max_len = max(max_len, right - left + 1)
+    return max_len
 
-def two_sum(nums, target):
-    for i in range(len(nums)):
-        for j in range(i+1, len(nums)):
-            if nums[i] + nums[j] == target:
-                return [i, j]
+print(length_of_longest(s))
+
+# Try ANY problem here:
+# nums = [2,7,11,15]
+# target = 9
+# print(two_sum(nums,target))
 </textarea>
-<button class="run" onclick="run()">RUN ▶</button>
+<button class="run" id="runBtn" onclick="run()">Loading Python... ⏳</button>
 </div>
 <div>
-<div class="card c1"><b>1 Question Asked In</b><div style="font-size:11px;margin-top:4px"><b>Two Sum - LeetCode #1</b> - Amazon, Google, TCS Digital</div></div>
-<div class="card c2"><b>2 Concepts Explained</b><div id="concepts" style="font-size:10px;margin-top:6px">List, Loop i, Loop j, If check</div></div>
-<div class="card c3">
-<div style="display:flex;justify-content:space-between"><b>3 Visualize</b><span id="cnt" style="border:1px solid #fff;border-radius:10px;padding:2px 8px;font-size:10px">0/0</span></div>
-<div class="row"><div class="b" id="n">[ ]</div><div class="b" id="t">?</div></div>
-<div style="background:#1e1e1e;border-radius:10px;padding:8px;font-size:10px">> <span id="dry">Click RUN</span></div>
-<div class="ctrls"><button onclick="pr()">‹</button><button onclick="nx()">›</button><button onclick="au()" style="width:auto;padding:0 12px">Auto</button></div>
-<div id="list"></div>
-</div>
-</div>
-</div>
-
-<script>
-let S=[]; let idx=0;
-function parseCode(){
-  let code=document.getElementById('code').value;
-  let numsMatch=code.match(/\[([0-9,\s]+)\]/);
-  let targetMatch=code.match(/target\s*=\s*(\d+)/);
-  if(!numsMatch || !targetMatch) return null;
-  let nums=numsMatch[1].split(',').map(x=>parseInt(x.trim())).filter(x=>!isNaN(x));
-  let target=parseInt(targetMatch[1]);
-  return {nums,target};
-}
-function buildSteps(nums,target){
-  let steps=[];
-  steps.push({dry:`nums=${JSON.stringify(nums)}, target=${target}`,detail:`1. Start: nums=${JSON.stringify(nums)}, target=${target}`});
-  let found=false;
-  for(let i=0;i<nums.length;i++){
-    for(let j=i+1;j<nums.length;j++){
-      let sum=nums[i]+nums[j];
-      let check=`${nums[i]}+${nums[j]}=${sum} ${sum==target?'==':'!='} ${target}?`;
-      steps.push({dry:`Check i=${i}, j=${j}: ${check}`,detail:`${steps.length+1}. Check i=${i}, j=${j}: ${check}`});
-      if(sum==target){
-        steps.push({dry:`FOUND! ${nums[i]}+${nums[j]}=${target} -> [${i},${j}]`,detail:`${steps.length+1}. FOUND! Return [${i},${j}]`});
-        found=true; break;
-      }
-    }
-    if(found) break;
-  }
-  if(!found) steps.push({dry:`No pair found`,detail:`${steps.length+1}. No pair sums to ${target}`});
-  return steps;
-}
-function draw(){
-  if(S.length==0) return;
-  document.getElementById('cnt').innerText=(idx+1)+"/"+S.length;
-  document.getElementById('dry').innerText=S[idx].dry;
-  document.getElementById('list').innerHTML=S.map((s,k)=>`<div class="s ${k==idx?'on':''}">${s.detail}</div>`).join('');
-}
-function run(){
-  let data=parseCode();
-  if(!data){ alert('Write like: nums = [2,7,11,15]\\ntarget = 9'); return; }
-  document.getElementById('n').innerText=JSON.stringify(data.nums);
-  document.getElementById('t').innerText=data.target;
-  S=buildSteps(data.nums,data.target);
-  idx=0; draw();
-}
-function nx(){if(idx<S.length-1){idx++;draw()}}
-function pr(){if(idx>0){idx--;draw()}}
-function au(){let q=setInterval(()=>{if(idx<S.length-1){idx++;draw()}else clearInterval(q)},700)}
-</script>
-</body>
-</html>
+<div class="card c1"><b>1 Output - Real Python Run</b><div class="out" id="output">Click RUN to execute any code</div></div>
+<div class="card c2"><b
