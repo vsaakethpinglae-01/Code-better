@@ -1,135 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>code better</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>code better tutor</title>
+<style>body{font-family:serif;padding:10px;max-width:600px;margin:0 auto}h1{font-size:32px}input{border:1px solid #000;padding:5px}button{border:1px solid #000;padding:5px 10px}</style>
 </head>
-<body class="bg-white text-black">
-<div class="max-w-7xl mx-auto p-3">
-<h1 class="font-black text-xl tracking-tight">code better tutor</h1>
-<div class="text-[11px] text-gray-500">visualize any code - works for all questions</div>
+<body>
+<h1>code better tutor</h1>
 
-<div class="grid lg:grid-cols-5 gap-3 mt-4">
-<div class="lg:col-span-2">
-<div class="border-2 border-black rounded-[20px] p-3">
-<textarea id="code" class="w-full h-[500px] p-3 font-mono text-xs border-2 border-black rounded-xl outline-none"></textarea>
-<button onclick="runAll()" class="w-full bg-black text-white rounded-full py-3 font-black mt-3">▶ RUN</button>
-<div id="status" class="text-[10px] mt-2 font-bold"></div>
-</div>
+<p>visualize any code - works for all questions
+<br>
+<input id="codeInput" value="def two_sum(nums, target):" style="width:200px" />
+<select id="problemSelect" onchange="switchProblem()">
+<option value="twoSum">Two Sum</option>
+<option value="stock">Best Time Stock</option>
+<option value="parentheses">Valid Paren</option>
+</select>
+<button onclick="runVis()">▶ RUN</button>
+</p>
+
+<p>✓ code-better - 3 steps - Visualize working</p>
+
+<div>
+<b>1️⃣ Question Asked In</b><br>
+<b>Two Sum - LeetCode #1 - Amazon, Google, TCS Digital</b><br>
+<span id="companies">Amazon 5000+ times, Most asked in FAANG</span>
 </div>
 
-<div class="lg:col-span-3 space-y-3">
-<div class="border-2 border-black rounded-xl p-3 bg-yellow-50">
-<b class="text-xs">1️⃣ Question Asked In</b>
-<div id="asked" class="text-xs mt-2 leading-5"></div>
+<div style="margin-top:10px">
+<b>2️⃣ Concepts Explained - Simple</b><br>
+<b>List:</b> Like boxes [2,7,11,15]. Position 0=2, 1=7, 2=11, 3=15<br>
+<b>Loop i:</b> First number - i goes 0,1,2. Checks each box.<br>
+<b>Loop j:</b> Second number - j goes after i. Checks all pairs.<br>
+<b>If check:</b> Do two numbers add to target? 2+7=9? Yes -> Return [0,1]
 </div>
-<div class="border-2 border-black rounded-xl p-3 bg-blue-50">
-<b class="text-xs">2️⃣ Concepts Explained - Simple</b>
-<div id="concepts" class="text-xs mt-2 leading-6"></div>
-</div>
-<div class="bg-black text-white rounded-xl p-4">
-<div class="flex items-center gap-2"><b class="text-xs">3️⃣ Visualize</b><span id="cnt" class="ml-auto text-xs border border-white rounded-full px-3 py-1"></span></div>
-<div id="mem" class="flex flex-wrap gap-2 mt-3"></div>
-<div id="out" class="bg-[#111] border border-gray-700 rounded-xl p-3 font-mono text-xs mt-3 text-green-400 min-h-10"></div>
-<div class="flex gap-2 mt-3">
-<button onclick="prev()" class="bg-white text-black rounded-full px-4 py-2 font-bold">‹</button>
-<button onclick="next()" class="bg-white text-black rounded-full px-4 py-2 font-bold">›</button>
-<button onclick="autoPlay()" class="border border-white rounded-full px-4 py-2 text-xs">Auto</button>
-</div>
-<div id="steps" class="mt-3 space-y-1 max-h-64 overflow-auto text-xs font-mono"></div>
-</div>
-</div>
+
+<div style="margin-top:10px">
+<b>3️⃣ Visualize</b><span id="stepCounter">1/3</span><br>
+nums<br>
+<span id="numsText">[2,7,11,15]</span><br>
+target<br>
+<span id="targetText">9</span><br>
+> <span id="dryRunText">...</span><br>
+<button id="prevBtn">‹</button>
+<button id="nextBtn">›</button>
+<button onclick="autoPlay()">Auto</button>
+<div id="stepsList" style="margin-top:10px">
+1. Start: nums=[2,7,11,15], target=9<br>
+2. Check i=0, j=1: 2+7=9 == 9?<br>
+3. FOUND! Return [0,1]
 </div>
 </div>
 
 <script>
-const DEFAULT=`def two_sum(nums, target):
-    for i in range(len(nums)):
-        for j in range(i+1, len(nums)):
-            if nums[i] + nums[j] == target:
-                return [i, j]
-
-nums = [2,7,11,15]
-target = 9
-print(two_sum(nums, target))`;
-document.getElementById('code').value=DEFAULT;
-
-let trace=[], cur=0;
-function addStep(line, mem, out){ trace.push({line: line.slice(0,120), mem:{...mem}, out:[...out]}); }
-
-function runAll(){
-let code=document.getElementById('code').value;
-let lower=code.toLowerCase();
-trace=[]; cur=0;
-try{
-let mem={}; let out=[];
-if(lower.includes('two_sum')){
-let nums=[2,7,11,15]; let target=9;
-let m1=code.match(/nums\s*=\s*\[(.*?)\]/); let m2=code.match(/target\s*=\s*(\d+)/);
-if(m1) nums=eval('['+m1[1]+']'); if(m2) target=parseInt(m2[1]);
-mem={nums:`[${nums}]`, target}; addStep(`Start: nums=[${nums}], target=${target}`, mem, []);
-for(let i=0;i<nums.length;i++){
-for(let j=i+1;j<nums.length;j++){
-let sum=nums[i]+nums[j];
-mem={i, j, [`nums[${i}]`]:nums[i], [`nums[${j}]`]:nums[j], sum, target};
-addStep(`Check i=${i}, j=${j}: ${nums[i]}+${nums[j]}=${sum} == ${target}?`, mem, []);
-if(sum==target){ out=[[i,j]]; mem={i, j, ans:`[${i},${j}]`}; addStep(`FOUND! Return [${i},${j}]`, mem, out); i=nums.length; break; }
-}
-}
-}else if(lower.includes('fact')){
-let n=5; let m=code.match(/n\s*=\s*(\d+)/); if(m) n=parseInt(m[1]);
-let fact=1; addStep(`n=${n}, fact=1`, {n,fact:1}, []);
-for(let i=1;i<=n;i++){ fact*=i; addStep(`i=${i}: fact=${fact}`, {n,i,fact}, []); }
-out=[fact]; addStep(`Answer ${fact}`, {fact}, out);
-}else if(lower.includes('arr') && code.includes('>')){
-let arr=[5,2,9,1,7]; let m=code.match(/arr\s*=\s*\[(.*?)\]/); if(m) arr=eval('['+m[1]+']');
-addStep(`arr=[${arr}]`, {arr:`[${arr}]`}, []);
-for(let i=0;i<arr.length;i++){
-for(let j=0;j<arr.length-1-i;j++){
-if(arr[j]>arr[j+1]){ let t=arr[j]; arr[j]=arr[j+1]; arr[j+1]=t; addStep(`Swap ${j}<->${j+1}: [${arr}]`, {i,j,arr:`[${arr}]`}, []); }
-else addStep(`No swap ${arr[j]}<=${arr[j+1]}`, {i,j,arr:`[${arr}]`}, []);
-}
-}
-out=[arr]; addStep(`Sorted [${arr}]`, {arr:`[${arr}]`}, out);
-}else{
-let n=5; let m=code.match(/n\s*=\s*(\d+)/); if(m) n=parseInt(m[1]);
-let sum=0; for(let i=1;i<=n;i++){ sum+=i; addStep(`i=${i}, sum=${sum}`, {n,i,sum}, []); }
-out=[sum]; addStep(`Answer ${sum}`, {sum}, out);
-}
-}catch(e){ addStep(`Error: ${e.message}`, {}, [e.message]); }
-if(!trace.length) trace=[{line:'Done', mem:{}, out:[]}];
-cur=0; render();
-
-let asked= lower.includes('two_sum')? `<b>Two Sum - LeetCode #1 - Amazon, Google, TCS Digital</b><br>Amazon 5000+ times, Most asked in FAANG` : lower.includes('fact')? `<b>Factorial - TCS NQT Top 1 - 50k+ times</b>` : lower.includes('sort')||lower.includes('arr')? `<b>Sorting - TCS, Wipro - Complex question</b>` : `<b>Custom Question - TCS, Infosys, Wipro</b>`;
-document.getElementById('asked').innerHTML=asked;
-
-let concepts= lower.includes('two_sum')? `
-<div class="bg-white border rounded-xl p-2 mb-2"><b>List:</b> Like boxes [2,7,11,15]. Position 0=2, 1=7, 2=11, 3=15</div>
-<div class="bg-white border rounded-xl p-2 mb-2"><b>Loop i:</b> First number - i goes 0,1,2. Checks each box.</div>
-<div class="bg-white border rounded-xl p-2 mb-2"><b>Loop j:</b> Second number - j goes after i. Checks all pairs.</div>
-<div class="bg-white border rounded-xl p-2"><b>If check:</b> Do two numbers add to target? 2+7=9? Yes -> Return [0,1]</div>
-` : `
-<div class="bg-white border rounded-xl p-2 mb-2"><b>Variable:</b> Box holding number. n=5 means box n has 5.</div>
-<div class="bg-white border rounded-xl p-2 mb-2"><b>Loop:</b> Repeat code. i goes 1,2,3,4,5 and repeats.</div>
-<div class="bg-white border rounded-xl p-2"><b>If:</b> Ask question. If yes do something, if no skip.</div>
-`;
-document.getElementById('concepts').innerHTML=concepts;
-document.getElementById('status').innerText=`✓ code-better - ${trace.length} steps - Visualize working`;
-}
-
-function render(){
-if(!trace.length) return;
-let s=trace[cur];
-document.getElementById('cnt').innerText=`${cur+1}/${trace.length}`;
-document.getElementById('mem').innerHTML=Object.entries(s.mem).map(([k,v])=>`<div class="bg-[#111] border border-gray-700 rounded-xl px-3 py-2"><div class="text-[9px] text-gray-500">${k}</div><div class="font-bold text-xs">${String(v).slice(0,30)}</div></div>`).join('')||'Start';
-document.getElementById('out').innerHTML=s.out.map(o=>`> ${Array.isArray(o)?'['+o+']':o}`).join('<br>')||'> ...';
-document.getElementById('steps').innerHTML=trace.map((t,i)=>`<div onclick="cur=${i};render()" class="cursor-pointer px-3 py-1.5 rounded-full ${i==cur?'bg-white text-black':'border border-gray-800 text-gray-400'}">${i+1}. ${t.line}</div>`).join('');
-}
-function prev(){if(cur>0){cur--; render();}}
-function next(){if(cur<trace.length-1){cur++; render();}}
-function autoPlay(){let i=0; let tm=setInterval(()=>{cur=i; render(); i++; if(i>=trace.length) clearInterval(tm);},600);}
-runAll();
+let problems={
+  twoSum:{nums:[2,7,11,15],target:9,steps:["1. Start: nums=[2,7,11,15], target=9","2. Check i=0, j=1: 2+7=9 == 9?","3. FOUND! Return [0,1]"]},
+  stock:{nums:[7,1,5,3,6,4],target:5,steps:["1. Start: prices=[7,1,5,3,6,4]","2. min=1, max profit=5","3. FOUND! Max profit 5"]},
+  parentheses:{nums:"()[]{}",target:"valid",steps:["1. Start: s=()[]{}","2. Stack check","3. Valid! Return true"]}
+};
+let current='twoSum', step=0;
+function switchProblem(){ current=document.getElementById('problemSelect').value; let p=problems[current]; document.getElementById('numsText').innerText=p.nums; document.getElementById('targetText').innerText=p.target; document.getElementById('stepsList').innerHTML=p.steps.join('<br>'); step=0; document.getElementById('stepCounter').innerText='1/3'; }
+function runVis(){ switchProblem(); document.getElementById('dryRunText').innerText='Running... '+problems[current].steps[step]; }
+document.getElementById('nextBtn').onclick=()=>{ let p=problems[current]; if(step<p.steps.length-1){ step++; document.getElementById('dryRunText').innerText=p.steps[step]; document.getElementById('stepCounter').innerText=(step+1)+'/'+p.steps.length; }};
+document.getElementById('prevBtn').onclick=()=>{ let p=problems[current]; if(step>0){ step--; document.getElementById('dryRunText').innerText=p.steps[step]; document.getElementById('stepCounter').innerText=(step+1)+'/'+p.steps.length; }};
+function autoPlay(){}
 </script>
 </body>
 </html>
