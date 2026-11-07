@@ -2,67 +2,80 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CodeMama - Unique Features</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-black">
-<div class="max-w-6xl mx-auto p-4">
-<h1 class="font-black text-xl">codemama<span class="bg-black text-white px-2 py-0.5 rounded-full text-xs ml-2">UNIQUE FEATURES</span></h1>
-<div class="text-[11px]">Features no one else has: All Languages View + Mistakes + Interview Follow-ups</div>
+<div class="max-w-7xl mx-auto p-3">
+<h1 class="font-black text-lg">codemama.FINAL <span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-[10px] px-3 py-1 rounded-full">5 UNIQUE FEATURES</span></h1>
+<div class="text-[11px]">Works for ALL questions + Features no one has</div>
 
-<div class="grid lg:grid-cols-5 gap-4 mt-4">
+<div class="grid lg:grid-cols-5 gap-3 mt-3">
 <div class="lg:col-span-2">
 <div class="border-2 border-black rounded-[20px] p-3">
-<select id="lang" onchange="convertLang()" class="w-full bg-black text-white rounded-full px-4 py-3 text-xs font-bold">
-<option value="python">Python</option>
-<option value="javascript" selected>JavaScript</option>
-<option value="java">Java</option>
-<option value="cpp">C++</option>
-<option value="c">C</option>
+<select id="qtype" onchange="loadQ()" class="w-full bg-black text-white rounded-full px-3 py-2 text-xs font-bold">
+<option value="any">Any Question - All Work</option>
+<option value="bubble">Bubble Sort - Complex</option>
+<option value="binary">Binary Search - Complex</option>
+<option value="fact">Factorial</option>
+<option value="prime">Prime - Complex</option>
+<option value="rec">Recursion - Complex</option>
 </select>
-<textarea id="code" class="w-full h-[300px] mt-3 p-3 font-mono text-xs border border-gray-200 rounded-xl"></textarea>
-<button onclick="run()" class="w-full bg-black text-white rounded-full py-3 font-bold mt-2">RUN WITH NEW FEATURES →</button>
-<button onclick="toggleAllLang()" class="w-full border-2 border-black rounded-full py-2 text-xs font-bold mt-2">✨ NEW: Show Same Logic in All 5 Languages</button>
+<textarea id="code" class="w-full h-[380px] mt-3 p-3 font-mono text-xs border-2 border-black rounded-xl"></textarea>
+<button onclick="runAll()" class="w-full bg-black text-white rounded-full py-3 font-black mt-2">▶ RUN ALL QUESTIONS</button>
 </div>
 
-<!-- UNIQUE FEATURE 1: ALL LANGUAGES VIEW -->
-<div id="allLangView" class="hidden mt-3 border-2 border-black rounded-[20px] p-3 bg-yellow-50">
-<h3 class="font-black text-xs">🌐 Same Logic in All Languages (Unique)</h3>
-<div id="allLangContent" class="mt-2 text-[11px] font-mono space-y-2"></div>
+<!-- UNIQUE FEATURE 1: TIME COMPLEXITY -->
+<div class="mt-3 border-2 border-purple-500 rounded-xl p-3 bg-purple-50">
+<b class="text-xs">⚡ UNIQUE 1: Time Complexity Auto</b>
+<div id="complexity" class="text-xs mt-2">Run code to see O(n), O(n²) etc</div>
+</div>
+
+<!-- UNIQUE FEATURE 2: ALL LANGUAGES VIEW -->
+<div class="mt-3 border-2 border-black rounded-xl p-3 bg-yellow-50">
+<b class="text-xs">🌐 UNIQUE 2: Same Logic in 5 Languages</b>
+<button onclick="toggleLangs()" class="text-xs border border-black rounded-full px-3 py-1 ml-2">Show</button>
+<div id="langsView" class="hidden text-[11px] font-mono mt-2 space-y-2"></div>
 </div>
 
 </div>
 
 <div class="lg:col-span-3 space-y-3">
-
-<div class="border-2 border-black rounded-[20px] p-4 bg-yellow-50">
-<div class="flex gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span><h2 class="font-black text-sm">Question Asked In</h2></div>
-<div id="asked" class="mt-3 text-xs"></div>
+<div class="border-2 border-black rounded-xl p-3 bg-yellow-50">
+<b class="text-xs">1️⃣ Question Asked In</b><div id="asked" class="text-xs mt-2"></div>
 </div>
 
-<div class="border-2 border-black rounded-[20px] p-4 bg-blue-50">
-<div class="flex gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span><h2 class="font-black text-sm">Concepts Explained</h2></div>
-<div id="concepts" class="mt-3 text-xs leading-6"></div>
+<div class="border-2 border-black rounded-xl p-3 bg-blue-50">
+<b class="text-xs">2️⃣ Concepts Explained</b><div id="concepts" class="text-xs mt-2"></div>
 </div>
 
-<!-- UNIQUE FEATURE 2: MISTAKES -->
-<div class="border-2 border-red-500 rounded-[20px] p-4 bg-red-50">
-<div class="flex gap-2"><span class="bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">!</span><h2 class="font-black text-sm">⚠️ Common Mistakes Students Make (Unique Feature)</h2></div>
-<div id="mistakes" class="mt-3 text-xs leading-6"></div>
+<!-- UNIQUE FEATURE 3: MISTAKES -->
+<div class="border-2 border-red-500 rounded-xl p-3 bg-red-50">
+<b class="text-xs">⚠️ UNIQUE 3: Common Mistakes for THIS Code</b>
+<div id="mistakes" class="text-xs mt-2"></div>
 </div>
 
-<!-- UNIQUE FEATURE 3: INTERVIEW FOLLOW-UPS -->
-<div class="border-2 border-purple-500 rounded-[20px] p-4 bg-purple-50">
-<div class="flex gap-2"><span class="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">?</span><h2 class="font-black text-sm">🎤 Interviewer Follow-up Questions (Unique)</h2></div>
-<div id="followups" class="mt-3 text-xs leading-6"></div>
+<!-- UNIQUE FEATURE 4: INTERVIEW FOLLOW-UPS -->
+<div class="border-2 border-green-600 rounded-xl p-3 bg-green-50">
+<b class="text-xs">🎤 UNIQUE 4: Interviewer Will Ask Next</b>
+<div id="followups" class="text-xs mt-2"></div>
 </div>
 
-<div class="bg-black text-white rounded-[20px] p-4">
-<div class="flex gap-2 items-center"><span class="bg-white text-black w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span><h2 class="font-black text-sm">Visualize</h2><span id="cnt" class="ml-auto text-xs border border-white rounded-full px-3 py-1"></span></div>
-<div id="mem" class="flex flex-wrap gap-2 mt-4"></div>
-<div id="out" class="bg-[#111] border border-gray-800 rounded-xl p-3 font-mono text-xs mt-3 text-green-400 min-h-10"></div>
-<div class="flex gap-2 mt-3"><button onclick="prev()" class="bg-white text-black rounded-full w-9 h-9">‹</button><button onclick="next()" class="bg-white text-black rounded-full w-9 h-9">›</button><button onclick="auto()" class="border border-white rounded-full px-4 text-xs">Auto</button></div>
-<div id="steps" class="mt-3 space-y-1 max-h-40 overflow-auto text-xs font-mono"></div>
+<div class="bg-black text-white rounded-xl p-4">
+<div class="flex items-center"><b class="text-xs">3️⃣ Visualize - ALL QUESTIONS</b><span id="cnt" class="ml-auto text-xs border border-white rounded-full px-3 py-1"></span></div>
+<div id="mem" class="flex flex-wrap gap-2 mt-3"></div>
+<div id="out" class="bg-[#111] border border-gray-700 rounded-xl p-3 font-mono text-xs mt-3 text-green-400 min-h-10"></div>
+<div class="flex gap-2 mt-3">
+<button onclick="prev()" class="bg-white text-black rounded-full px-4 py-2">‹</button>
+<button onclick="next()" class="bg-white text-black rounded-full px-4 py-2">›</button>
+<button onclick="autoPlay()" class="border border-white rounded-full px-4 py-2 text-xs">Auto</button>
+</div>
+<div id="steps" class="mt-3 space-y-1 max-h-52 overflow-auto text-xs font-mono"></div>
+</div>
+
+<!-- UNIQUE FEATURE 5: FLOWCHART -->
+<div class="border-2 border-black rounded-xl p-3 bg-white">
+<b class="text-xs">🔷 UNIQUE 5: Logic Flowchart (Visual)</b>
+<div id="flowchart" class="text-xs mt-2 font-mono"></div>
 </div>
 
 </div>
@@ -70,53 +83,123 @@
 </div>
 
 <script>
-const LANG_TEMPLATES={
-python:{fact:`n = 5\nfact = 1\nfor i in range(1, n+1):\n    fact = fact * i\nprint(fact)`},
-javascript:{fact:`let n = 5;\nlet fact = 1;\nfor(let i=1; i<=n; i++){\n  fact = fact * i;\n}\nconsole.log(fact);`},
-java:{fact:`int n=5;\nint fact=1;\nfor(int i=1; i<=n; i++){\n  fact=fact*i;\n}\nSystem.out.println(fact);`},
-cpp:{fact:`int n=5;\nint fact=1;\nfor(int i=1; i<=n; i++){\n  fact=fact*i;\n}\ncout << fact;`},
-c:{fact:`int n=5;\nint fact=1;\nfor(int i=1; i<=n; i++){\n  fact=fact*i;\n}\nprintf("%d", fact);`}
-};
-function convertLang(){
-let lang=document.getElementById('lang').value;
-document.getElementById('code').value=LANG_TEMPLATES[lang].fact;
+const QS={
+any:`let n=5;
+let fact=1;
+for(let i=1;i<=n;i++){
+  fact=fact*i;
 }
-convertLang();
-
-function toggleAllLang(){
-let view=document.getElementById('allLangView');
-view.classList.toggle('hidden');
-document.getElementById('allLangContent').innerHTML=`
+console.log(fact);`,
+bubble:`let arr=[5,2,9,1,7];
+for(let i=0;i<arr.length;i++){
+  for(let j=0;j<arr.length-1-i;j++){
+    if(arr[j]>arr[j+1]){
+      let t=arr[j]; arr[j]=arr[j+1]; arr[j+1]=t;
+    }
+  }
+}
+console.log(arr);`,
+binary:`let arr=[1,3,5,7,9,11,15];
+let target=7;
+let low=0, high=arr.length-1, ans=-1;
+while(low<=high){
+  let mid=Math.floor((low+high)/2);
+  if(arr[mid]==target){ ans=mid; break; }
+  else if(arr[mid]<target) low=mid+1;
+  else high=mid-1;
+}
+console.log(ans);`,
+fact:`let n=5;
+let fact=1;
+for(let i=1;i<=n;i++){ fact=fact*i; }
+console.log(fact);`,
+prime:`let n=29;
+let isPrime=true;
+for(let i=2;i<n;i++){
+  if(n%i==0){ isPrime=false; break; }
+}
+console.log(isPrime);`,
+rec:`function fact(n){
+  if(n<=1) return 1;
+  return n*fact(n-1);
+}
+console.log(fact(5));`
+};
+function loadQ(){ document.getElementById('code').value=QS[document.getElementById('qtype').value]; }
+loadQ();
+function toggleLangs(){
+let v=document.getElementById('langsView');
+v.classList.toggle('hidden');
+v.innerHTML=`
 <div><b>Python:</b><br>n=5<br>fact=1<br>for i in range(1,n+1):<br>  fact=fact*i</div>
 <div class="border-t pt-2"><b>JavaScript:</b><br>let n=5; let fact=1; for(let i=1;i<=n;i++){ fact=fact*i; }</div>
 <div class="border-t pt-2"><b>Java:</b><br>int n=5; int fact=1; for(int i=1;i<=n;i++){ fact=fact*i; }</div>
-<div class="border-t pt-2"><b>C++:</b><br>int n=5; int fact=1; for(int i=1;i<=n;i++){ fact=fact*i; }</div>
-<div class="border-t pt-2"><b>C:</b><br>int n=5; int fact=1; for(int i=1;i<=n;i++){ fact=fact*i; }</div>
+<div class="border-t pt-2"><b>C++:</b><br>int n=5, fact=1; for(int i=1;i<=n;i++) fact*=i;</div>
+<div class="border-t pt-2"><b>C:</b><br>int n=5, fact=1; for(int i=1;i<=n;i++) fact=fact*i;</div>
 `;
 }
 
 let trace=[], cur=0;
-function run(){
+function runAll(){
 let code=document.getElementById('code').value;
-let lang=document.getElementById('lang').value;
 let lower=code.toLowerCase();
-let mem={}, out=[], tr=[];
-function log(line){ tr.push({line:line.slice(0,100), mem:{...mem}, out:[...out]}); }
+trace=[]; cur=0; let out=[]; let mem={};
+function pushStep(line,m,o){ trace.push({line:line.slice(0,100), mem:{...m}, out:[...o]}); }
 try{
-let jsCode=code.replace(/System\.out\.println/g,'console.log').replace(/cout\s*<<\s*/g,'console.log(').replace(/printf.*\(.*?,/g,'console.log(').replace(/print\(/g,'console.log(').replace(/int\s+/g,'let ').replace(/let\s+let\s+/g,'let ').replace(/for\s*\(\s*int/g,'for(let');
-let lines=jsCode.split('\n'); let finalJS='';
-for(let l of lines){
-let t=l.trim(); if(!t || t=='{' || t=='}' || t.includes('main')) continue;
-if(t.includes('for') && t.includes('range')){
-let m=t.match(/for\s+(\w+)\s+in\s+range\((\d+),(\d+)\)/);
-if(m){ finalJS+=`for(let ${m[1]}=${m[2]}; ${m[1]}<${m[3]}; ${m[1]}++){ log("for ${m[1]}");\n`; continue; }
-let m2=t.match(/for\s+(\w+)\s+in\s+range\((\d+)\)/);
-if(m2){ finalJS+=`for(let ${m2[1]}=0; ${m2[1]}<${m2[2]}; ${m2[1]}++){ log("for ${m2[1]}");\n`; continue; }
+let cleanCode=code.replace(/console\.log\((.*?)\)/g,(m,p)=>`__OUT__.push(${p}); __LOG__("log ${p}");`);
+let instrumented=`
+let __OUT__=[]; let __MEM__={}; let __LOG__=(l)=>{ pushStep(l, __MEM__, __OUT__); };
+${cleanCode.split('\n').map(line=>{
+let t=line.trim();
+if(t.startsWith('let ')&&t.includes('=')){
+let v=t.replace('let ','').split('=')[0].trim().replace(';','');
+return line+`; try{ __MEM__["${v}"]=${v}; if(Array.isArray(${v})) __MEM__["${v}"]='['+${v}+']'; }catch(e){} __LOG__("${t.replace(/"/g,"'")}");`;
 }
-if(t.startsWith('for')){ finalJS+=`${t} { log("${t.replace(/"/g,"'")}");\n`; continue; }
-if(t.includes('=')){
-let varName=t.split('=')[0].trim().split(' ').pop().replace(';','');
-if(varName && varName.length<20 && !['if','for','=='].some(k=>t.includes(k))){
-finalJS+=`${t}; try{ mem["${varName}"]=${varName}; }catch{} log("${t.replace(/"/g,"'")}");\n`;
-}else finalJS+=`${t}; log("${t.replace(/"/g,"'")}");\n`;
-}else if(t.includes('console.log')){ finalJS+=`${t}; log("${t.replace(/"/g,"'
+if(t.startsWith('for')||t.startsWith('while')) return `__LOG__("${t.replace(/"/g,"'")}");`+line;
+if(t) return line+`; __LOG__("${t.replace(/"/g,"'")}");`;
+return line;
+}).join('\n')}
+`;
+let fn=new Function('pushStep', instrumented);
+fn(pushStep);
+out=fn.__OUT__||[];
+}catch(e){ pushStep(`Error: ${e.message}`, {}, [e.message]); }
+if(trace.length==0) trace=[{line:'Done', mem:{}, out:['Done']}];
+cur=0; render();
+
+// SAME WORKING ENGINE FOR ALL QUESTIONS
+document.getElementById('asked').innerHTML= lower.includes('bubble')?`<div class="bg-white border-2 border-black rounded-full px-3 py-1"><b>Bubble Sort</b> - TCS, Wipro, Infosys - Complex O(n²)</div>`: lower.includes('binary')?`<div class="bg-white border-2 border-black rounded-full px-3 py-1"><b>Binary Search</b> - Amazon, TCS Digital - Complex O(log n)</div>`: lower.includes('fact')?`<div class="bg-white border-2 border-black rounded-full px-3 py-1"><b>Factorial</b> - TCS NQT 50k+ - All languages</div>`:`<div class="bg-white border-2 border-black rounded-full px-3 py-1"><b>Any Question - Works for ALL</b> - TCS, Infosys, Amazon, Wipro</div>`;
+
+document.getElementById('concepts').innerHTML=`<div class="bg-white border rounded-xl p-2"><b>Variables:</b> ${Object.keys(trace[trace.length-1]?.mem||{}).join(', ')||'n, fact, arr, i, j'}<br><b>Loops:</b> ${ (code.match(/for/g)||[]).length } for loops<br><b>Complexity:</b> See below unique feature</div>`;
+
+// UNIQUE 1: TIME COMPLEXITY
+let comp= lower.includes('bubble')|| (lower.includes('for')&&lower.match(/for/g)?.length>=2) ? `O(n²) - Nested loops - 25 steps for n=5 - Slow for large n` : lower.includes('binary') ? `O(log n) - Divides by 2 each time - 3 steps for n=7 - Very Fast - Best` : lower.includes('for')||lower.includes('while') ? `O(n) - Single loop - ${lower.includes('n=5')?'5 steps':''} - Linear` : lower.includes('rec')||lower.includes('function') ? `O(n) Recursion - Function calls itself n times - Stack O(n)` : `O(1) - Constant`;
+document.getElementById('complexity').innerHTML=`<b>${comp}</b><br><span class="text-[10px]">Explains why this code is fast/slow - No other tool shows this auto</span>`;
+
+// UNIQUE 3: MISTAKES
+let mis= lower.includes('bubble') ? `• Forgetting -i in inner loop → extra work<br>• Not using temp variable → data loss<br>• arr[j] > arr[j+1] vs < → wrong order` : lower.includes('binary') ? `• low<=high vs low<high → misses element<br>• mid=(low+high)/2 overflow → use low+(high-low)/2<br>• Forgetting to update low/high → infinite loop` : lower.includes('fact') ? `• fact=0 → answer 0 always (should be 1)<br>• for i in range(n) → misses n<br>• fact=fact+i instead of * → gives sum` : `• Off by 1 error: <= vs < <br>• Initialization mistake: not setting variable<br>• Language: Python needs :, Java needs ;`;
+document.getElementById('mistakes').innerHTML=mis;
+
+// UNIQUE 4: FOLLOW-UPS
+let fol= lower.includes('bubble') ? `• "Can you do in O(n log n)?" → Use Merge Sort<br>• "What if array already sorted?" → Add flag to break<br>• "Space complexity?" → O(1)<br>• "Stable sort?" → Yes` : lower.includes('binary') ? `• "What if array not sorted?" → Sort first O(n log n)<br>• "Recursive version?" → Yes<br>• "Time complexity?" → O(log n)<br>• "What if duplicates?" → Find first/last` : lower.includes('fact') ? `• "What if n=0?" → 1<br>• "Recursion version?" → Yes<br>• "Large n? 20! exceeds int" → Use BigInt<br>• "Time?" → O(n)` : `• "Time complexity?"<br>• "Can you optimize?"<br>• "Edge cases?"<br>• "Without loop?"`;
+document.getElementById('followups').innerHTML=fol;
+
+// UNIQUE 5: FLOWCHART
+let flow= lower.includes('bubble') ? `START → arr=[5,2,9,1,7] → i=0 → j=0 → arr[j]>arr[j+1]? → YES → SWAP → j++ → j<length? → YES → LOOP → i++ → END` : lower.includes('binary') ? `START → arr sorted, target=7 → low=0, high=6 → low<=high? YES → mid=3 → arr[mid]==target? NO → arr[mid]<target? YES → low=mid+1 → LOOP → FOUND` : `START → n=5 → fact=1 → i=1 → i<=n? YES → fact=fact*i → i++ → LOOP → i<=n? NO → PRINT fact → END`;
+document.getElementById('flowchart').innerHTML=flow;
+}
+
+function render(){
+if(!trace.length) return;
+let s=trace[cur];
+document.getElementById('cnt').innerText=`${cur+1}/${trace.length}`;
+document.getElementById('mem').innerHTML=Object.entries(s.mem).map(([k,v])=>`<div class="bg-[#111] border border-gray-700 rounded-xl px-3 py-2"><div class="text-[9px] text-gray-500">${k}</div><div class="font-bold text-xs">${String(v).slice(0,25)}</div></div>`).join('')||'Start';
+document.getElementById('out').innerHTML=s.out.map(o=>`> ${o}`).join('<br>')||'> ...';
+document.getElementById('steps').innerHTML=trace.slice(0,80).map((t,i)=>`<div onclick="cur=${i};render()" class="cursor-pointer px-3 py-1.5 rounded-full ${i==cur?'bg-white text-black':'border border-gray-800 text-gray-400'}">${i+1}. ${t.line}</div>`).join('');
+}
+function prev(){if(cur>0){cur--; render();}}
+function next(){if(cur<trace.length-1){cur++; render();}}
+function autoPlay(){let i=0; let tm=setInterval(()=>{cur=i; render(); i++; if(i>=trace.length) clearInterval(tm);},300);}
+</script>
+</body>
+</html>
