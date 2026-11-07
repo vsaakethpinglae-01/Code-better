@@ -1,70 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>code better tutor</title>
-<style>body{font-family:serif;padding:10px;max-width:600px;margin:0 auto}h1{font-size:32px}input{border:1px solid #000;padding:5px}button{border:1px solid #000;padding:5px 10px}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui;background:#fdfcf8;padding:12px}
+.header{font-weight:800;font-size:18px;line-height:1.1}
+.sub{font-size:10px;color:#888;margin-bottom:12px}
+.main{border:2px solid #000;border-radius:16px;padding:10px;background:#fff;display:grid;grid-template-columns:1fr 1.8fr;gap:10px}
+.left{border:2px solid #000;border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+.left textarea{width:100%;height:340px;border:0;padding:10px;font-family:monospace;font-size:11px;resize:none;outline:none}
+.run{margin:8px;background:#111;color:#fff;border-radius:20px;padding:10px;border:0;font-weight:700;cursor:pointer}
+.small{font-size:8px;padding:0 8px 8px}
+.card{border:2px solid #000;border-radius:10px;padding:10px;margin-bottom:8px}
+.card b{font-size:11px}
+.card p{font-size:10px;margin-top:4px}
+.c1{background:#fffbe6}
+.c2{background:#f0f6ff}
+.c3{background:#111;color:#fff}
+.pill{background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 6px;margin-top:6px;font-size:9px}
+.pill2{background:#1a1a1a;border-radius:6px;padding:6px;font-size:9px;margin-top:4px}
+.vis-row{display:flex;gap:6px;margin:8px 0}
+.box{border:2px solid #333;padding:6px 10px;border-radius:8px;font-size:10px;font-weight:700}
+.btns{display:flex;gap:6px;margin:8px 0}
+.btns button{border:1px solid #333;border-radius:50%;width:28px;height:28px;background:#222;color:#fff}
+.step{background:#222;border-radius:10px;padding:6px 10px;margin-top:4px;font-size:9px}
+.step.active{background:#fff;color:#000}
+@media(max-width:700px){.main{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-<h1>code better tutor</h1>
+<div class="header">code better tutor</div>
+<div class="sub">visualize any code - works for all questions</div>
 
-<p>visualize any code - works for all questions
-<br>
-<input id="codeInput" value="def two_sum(nums, target):" style="width:200px" />
-<select id="problemSelect" onchange="switchProblem()">
-<option value="twoSum">Two Sum</option>
-<option value="stock">Best Time Stock</option>
-<option value="parentheses">Valid Paren</option>
-</select>
-<button onclick="runVis()">▶ RUN</button>
-</p>
+<div class="main">
+<div class="left">
+<textarea id="code">
+def two_sum(nums, target):
+    for i in range(len(nums)):
+        for j in range(i+1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return [i, j]
 
-<p>✓ code-better - 3 steps - Visualize working</p>
-
-<div>
-<b>1️⃣ Question Asked In</b><br>
-<b>Two Sum - LeetCode #1 - Amazon, Google, TCS Digital</b><br>
-<span id="companies">Amazon 5000+ times, Most asked in FAANG</span>
+nums = [2,7,11,15]
+target = 9
+print(two_sum(nums, target))
+</textarea>
+<button class="run" onclick="runVis()">RUN</button>
+<div class="small">codemama tutor - 3 steps - Visualize working</div>
 </div>
 
-<div style="margin-top:10px">
-<b>2️⃣ Concepts Explained - Simple</b><br>
-<b>List:</b> Like boxes [2,7,11,15]. Position 0=2, 1=7, 2=11, 3=15<br>
-<b>Loop i:</b> First number - i goes 0,1,2. Checks each box.<br>
-<b>Loop j:</b> Second number - j goes after i. Checks all pairs.<br>
-<b>If check:</b> Do two numbers add to target? 2+7=9? Yes -> Return [0,1]
+<div class="right">
+<div class="card c1">
+<b>1 Question Asked In</b>
+<p><b>Two Sum - LeetCode #1 - Amazon, Google, TCS Digital</b><br>Amazon 5000+ times, Most asked in FAANG</p>
 </div>
 
-<div style="margin-top:10px">
-<b>3️⃣ Visualize</b><span id="stepCounter">1/3</span><br>
-nums<br>
-<span id="numsText">[2,7,11,15]</span><br>
-target<br>
-<span id="targetText">9</span><br>
-> <span id="dryRunText">...</span><br>
-<button id="prevBtn">‹</button>
-<button id="nextBtn">›</button>
-<button onclick="autoPlay()">Auto</button>
-<div id="stepsList" style="margin-top:10px">
-1. Start: nums=[2,7,11,15], target=9<br>
-2. Check i=0, j=1: 2+7=9 == 9?<br>
-3. FOUND! Return [0,1]
+<div class="card c2">
+<b>2 Concepts Explained - Simple</b>
+<div class="pill"><b>List:</b> Like boxes [2,7,11,15]. Position 0->2, 1->7, 2->11, 3->15</div>
+<div class="pill"><b>Loop i:</b> First number - i goes 0,1,2. Checks each box.</div>
+<div class="pill"><b>Loop j:</b> Second number - j goes after i. Checks all pairs.</div>
+<div class="pill"><b>If check:</b> Do two numbers add to target? 2+7=9? Yes -> Return [0,1]</div>
+</div>
+
+<div class="card c3">
+<div style="display:flex;justify-content:space-between"><b>3 Visualize</b><span style="border:1px solid #fff;border-radius:10px;padding:2px 6px;font-size:8px" id="counter">1/3</span></div>
+<div class="vis-row">
+<div class="box" id="box1">[2,7,11,15]</div>
+<div class="box" id="box2">9</div>
+</div>
+<div class="pill2">> <span id="dry">...</span></div>
+<div class="btns"><button onclick="prev()">‹</button><button onclick="next()">›</button><button onclick="auto()">Auto</button></div>
+<div id="steps"></div>
+</div>
 </div>
 </div>
 
 <script>
-let problems={
-  twoSum:{nums:[2,7,11,15],target:9,steps:["1. Start: nums=[2,7,11,15], target=9","2. Check i=0, j=1: 2+7=9 == 9?","3. FOUND! Return [0,1]"]},
-  stock:{nums:[7,1,5,3,6,4],target:5,steps:["1. Start: prices=[7,1,5,3,6,4]","2. min=1, max profit=5","3. FOUND! Max profit 5"]},
-  parentheses:{nums:"()[]{}",target:"valid",steps:["1. Start: s=()[]{}","2. Stack check","3. Valid! Return true"]}
-};
-let current='twoSum', step=0;
-function switchProblem(){ current=document.getElementById('problemSelect').value; let p=problems[current]; document.getElementById('numsText').innerText=p.nums; document.getElementById('targetText').innerText=p.target; document.getElementById('stepsList').innerHTML=p.steps.join('<br>'); step=0; document.getElementById('stepCounter').innerText='1/3'; }
-function runVis(){ switchProblem(); document.getElementById('dryRunText').innerText='Running... '+problems[current].steps[step]; }
-document.getElementById('nextBtn').onclick=()=>{ let p=problems[current]; if(step<p.steps.length-1){ step++; document.getElementById('dryRunText').innerText=p.steps[step]; document.getElementById('stepCounter').innerText=(step+1)+'/'+p.steps.length; }};
-document.getElementById('prevBtn').onclick=()=>{ let p=problems[current]; if(step>0){ step--; document.getElementById('dryRunText').innerText=p.steps[step]; document.getElementById('stepCounter').innerText=(step+1)+'/'+p.steps.length; }};
-function autoPlay(){}
+let stepsData=[
+{nums:"[2,7,11,15]",t:"9",dry:"nums=[2,7,11,15], target=9",detail:"1. Start: nums=[2,7,11,15], target=9"},
+{nums:"[2,7,11,15]",t:"9",dry:"Check i=0, j=1: 2+7=9 == 9?",detail:"2. Check i=0, j=1: 2+7=9 == 9?"},
+{nums:"[2,7,11,15]",t:"9",dry:"FOUND! Return [0,1]",detail:"3. FOUND! Return [0,1]"}
+];
+let idx=0;
+function render(){ document.getElementById('counter').innerText=(idx+1)+"/"+stepsData.length; document.getElementById('dry').innerText=stepsData[idx].dry; document.getElementById('box1').innerText=stepsData[idx].nums; document.getElementById('box2').innerText=stepsData[idx].t; let h=""; stepsData.forEach((s,i)=>{ h+=`<div class="step ${i==idx?'active':''}">${s.detail}</div>`; }); document.getElementById('steps').innerHTML=h; }
+function runVis(){ idx=0; render(); }
+function next(){ if(idx<stepsData.length-1){ idx++; render(); } }
+function prev(){ if(idx>0){ idx--; render(); } }
+function auto(){ let iv=setInterval(()=>{ if(idx<stepsData.length-1){ idx++; render(); } else clearInterval(iv); },800); }
+render();
 </script>
 </body>
 </html>
