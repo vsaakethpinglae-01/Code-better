@@ -2,50 +2,167 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CodeMama</title>
+<title>CodeMama - Question • Concepts • Visualize</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-white text-black">
-<div class="max-w-5xl mx-auto p-4">
-<h1 class="text-2xl font-black tracking-tight">codemama<span class="font-light">.visual</span></h1>
+<body class="bg-[#fcfcfc] text-black">
+<div class="max-w-6xl mx-auto p-4">
 
-<div class="grid md:grid-cols-2 gap-6 mt-6">
-<div>
-<select id="lang" class="border border-black rounded-full px-4 py-2 text-sm w-full">
-<option>Python</option><option>JavaScript</option><option>Java</option><option>C++</option><option>C</option>
+<div class="flex justify-between items-center">
+<h1 class="font-black text-xl tracking-tight">codemama</h1>
+<span class="text-[10px] border border-black rounded-full px-3 py-1">Question • Concepts • Visualize</span>
+</div>
+
+<div class="grid lg:grid-cols-5 gap-5 mt-6">
+<!-- CODE INPUT -->
+<div class="lg:col-span-2">
+<div class="bg-white border-2 border-black rounded-[20px] p-3">
+<select id="topic" onchange="load()" class="w-full bg-black text-white rounded-full px-4 py-3 text-sm font-bold">
+<option value="fact">Factorial of Number</option>
+<option value="sum">Sum of N Numbers</option>
+<option value="prime">Prime Number Check</option>
+<option value="pal">Palindrome Check</option>
+<option value="fib">Fibonacci Series</option>
+<option value="max">Find Maximum</option>
+<option value="search">Linear Search</option>
+<option value="sort">Bubble Sort</option>
 </select>
-<textarea id="code" class="w-full h-80 mt-3 border border-black rounded-xl p-4 font-mono text-sm">for i in range(5):
-    x = i * 2
-    print(x)</textarea>
-<button onclick="run()" class="mt-3 w-full bg-black text-white rounded-full py-3 font-bold">VISUALIZE →</button>
+<textarea id="code" class="w-full h-[320px] mt-3 p-3 font-mono text-xs outline-none"></textarea>
+<button onclick="run()" class="w-full bg-black text-white rounded-full py-3 font-bold text-sm mt-2">VISUALIZE →</button>
+</div>
 </div>
 
-<div>
-<div class="border border-black rounded-xl p-4">
-<div id="mem" class="flex gap-3"></div>
-<div id="info" class="mt-4 font-mono text-xs text-gray-500"></div>
+<!-- RIGHT SIDE - YOUR FLOW -->
+<div class="lg:col-span-3 space-y-4">
+
+<!-- 1. QUESTION ASKED IN -->
+<div class="bg-white border-2 border-black rounded-[20px] p-4">
+<div class="flex items-center gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span><h2 class="font-black text-sm">Question Asked In</h2></div>
+<div id="asked" class="mt-3"></div>
 </div>
-<div id="steps" class="mt-4 space-y-2"></div>
+
+<!-- 2. CONCEPTS EXPLAINED -->
+<div class="bg-white border-2 border-black rounded-[20px] p-4">
+<div class="flex items-center gap-2"><span class="bg-black text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span><h2 class="font-black text-sm">Concepts Explained</h2></div>
+<div id="concepts" class="mt-3"></div>
+</div>
+
+<!-- 3. VISUALIZE -->
+<div class="bg-black text-white rounded-[20px] p-4">
+<div class="flex items-center gap-2"><span class="bg-white text-black w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span><h2 class="font-black text-sm">Visualize Execution</h2><span id="cnt" class="ml-auto text-xs border border-white rounded-full px-3 py-1"></span></div>
+<div id="mem" class="flex flex-wrap gap-2 mt-4"></div>
+<div id="out" class="bg-[#111] border border-gray-800 rounded-xl p-3 font-mono text-xs mt-3 text-green-400 min-h-12"></div>
+<div class="flex gap-2 mt-3">
+<button onclick="prev()" class="bg-white text-black rounded-full w-9 h-9 font-bold">‹</button>
+<button onclick="next()" class="bg-white text-black rounded-full w-9 h-9 font-bold">›</button>
+<button onclick="auto()" class="border border-white rounded-full px-4 text-xs">Auto Play</button>
+</div>
+<div id="steps" class="mt-4 space-y-1 max-h-44 overflow-auto"></div>
+</div>
+
 </div>
 </div>
 </div>
 
 <script>
-let cur=0, arr=[];
+const DATA={
+fact:{
+code:`let n = 5
+let fact = 1
+for(let i=1; i<=n; i++){
+  fact = fact * i
+}
+console.log(fact)`,
+asked:`<div class="space-y-2">
+<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS NQT</b> • Coding Round</span><span class="text-[10px] bg-black text-white rounded-full px-2 py-1">50k+ times</span></div>
+<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>Infosys SP</b> • Interview</span><span class="text-[10px] border rounded-full px-2 py-1">Top 10 Q</span></div>
+<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>Wipro Elite</b> • Every year</span><span class="text-[10px] border rounded-full px-2 py-1">Must Know</span></div>
+</div>`,
+concepts:`<div class="space-y-3 text-xs leading-6">
+<div><b>🔁 Loop (for i=1 to n):</b> Repeats same calculation. Instead of writing fact*1, fact*2, fact*3 manually, loop does it.</div>
+<div><b>📦 Accumulator (fact variable):</b> fact starts as 1. Each iteration: fact = fact * i. So 1→1→2→6→24→120. It accumulates result.</div>
+<div><b>🎯 Why fact=1 not 0:</b> If fact=0, 0*anything=0. So we start with 1.</div>
+<div class="bg-black text-white rounded-full px-3 py-1 inline-block text-[11px]">Practice: Fibonacci, Power of number, Sum of factorial</div>
+</div>`
+},
+sum:{
+code:`let n = 5\nlet sum = 0\nfor(let i=1; i<=n; i++){\n  sum = sum + i\n}\nconsole.log(sum)`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS NQT</b> • First Question</span><span class="text-[10px] bg-black text-white rounded-full px-2 py-1">Most Asked</span></div>`,
+concepts:`<div class="space-y-2 text-xs leading-6"><div><b>Loop:</b> Adds 1+2+3+4+5</div><div><b>sum variable:</b> Starts 0, grows each time</div></div>`
+},
+prime:{
+code:`let n = 7\nlet prime = true\nfor(let i=2; i<n; i++){\n  if(n % i == 0) prime = false\n}\nconsole.log(prime)`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS Digital</b></span><span class="text-[10px] bg-black text-white rounded-full px-2">High</span></div>`,
+concepts:`<div class="text-xs leading-6"><b>Modulo %:</b> n%i==0 means divisible<br><b>Flag:</b> prime true until we find divisor</div>`
+},
+pal:{
+code:`let s = "madam"\nlet rev = s.split('').reverse().join('')\nconsole.log(s==rev)`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS + Infosys</b></span><span class="text-[10px] bg-black text-white rounded-full px-2">Top 5</span></div>`,
+concepts:`<div class="text-xs leading-6"><b>Reverse:</b> Reverse string<br><b>Compare:</b> If same, palindrome</div>`
+},
+fib:{
+code:`let n=6\nlet a=0,b=1\nfor(let i=0;i<n;i++){\n  console.log(a)\n  let t=a+b; a=b; b=t\n}`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS NQT</b> • Top 3</span><span class="text-[10px] bg-black text-white rounded-full px-2">Must Know</span></div>`,
+concepts:`<div class="text-xs leading-6"><b>Two variables a,b:</b> Holds last two fib numbers<br><b>Swap:</b> t=a+b moves sequence forward</div>`
+},
+max:{
+code:`let arr=[3,9,2,15,6]\nlet max=arr[0]\nfor(let x of arr){\n  if(x>max) max=x\n}\nconsole.log(max)`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS + Wipro</b></span><span class="text-[10px] bg-black text-white rounded-full px-2">High</span></div>`,
+concepts:`<div class="text-xs leading-6"><b>Array traversal:</b> Check each element<br><b>Max logic:</b> If x bigger than current max, update</div>`
+},
+search:{
+code:`let arr=[2,4,6,8]\nlet target=6\nlet found=-1\nfor(let i=0;i<arr.length;i++){\n  if(arr[i]==target) found=i\n}\nconsole.log(found)`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>Infosys</b> • Search</span><span class="text-[10px] bg-black text-white rounded-full px-2">Common</span></div>`,
+concepts:`<div class="text-xs leading-6"><b>Linear search:</b> Check each index one by one</div>`
+},
+sort:{
+code:`let arr=[5,2,9,1]\nfor(let i=0;i<arr.length;i++){\n for(let j=0;j<arr.length-1;j++){\n  if(arr[j]>arr[j+1]){\n   let t=arr[j]; arr[j]=arr[j+1]; arr[j+1]=t\n  }\n }\n}\nconsole.log(arr)`,
+asked:`<div class="flex justify-between bg-[#f5f5f5] rounded-full px-4 py-2"><span><b>TCS</b> • Sorting</span><span class="text-[10px] bg-black text-white rounded-full px-2">Medium</span></div>`,
+concepts:`<div class="text-xs leading-6"><b>Bubble sort:</b> Compare neighbours and swap if wrong order</div>`
+}
+};
+
+function load(){
+let k=document.getElementById('topic').value;
+document.getElementById('code').value=DATA[k].code;
+document.getElementById('asked').innerHTML=DATA[k].asked;
+document.getElementById('concepts').innerHTML=DATA[k].concepts;
+run();
+}
+load();
+
+let trace=[], cur=0;
 function run(){
 let code=document.getElementById('code').value;
-let n=(code.match(/range\((\d+)\)/)||code.match(/<\s*(\d+)/)||[0,5])[1];
-n=parseInt(n);
-arr=[];
-for(let i=0;i<n;i++) arr.push({i,x:i*2});
-cur=0; show();
+let mem={}, out=[], tr=[];
+function log(l){ tr.push({line:l, mem:{...mem}, out:[...out]}); }
+try{
+let exec=code.replace(/let\s+/g,'').replace(/const\s+/g,'')
+.replace(/console\.log\((.*?)\)/g,(m,p)=>`out.push(${p}); log("print ${p}");`)
+.split(';').map(s=>{
+s=s.trim(); if(!s) return '';
+if(s.startsWith('for')||s.startsWith('if')||s.startsWith('else')||s=='{'||s=='}') return s+'; log("'+s.replace(/"/g,"'")+'");';
+if(s.includes('=') && !s.includes('==')){
+let v=s.split('=')[0].trim().split(' ').pop();
+return `${s}; try{ mem["${v}"]=${v}; }catch{} log("${s.replace(/"/g,"'")}");`;
 }
-function show(){
-let s=arr[cur];
-document.getElementById('mem').innerHTML=`<div class="border border-black rounded-lg px-6 py-3"><div class="text-xs">i</div><div class="text-2xl font-bold">${s.i}</div></div><div class="bg-black text-white rounded-lg px-6 py-3"><div class="text-xs opacity-60">x</div><div class="text-2xl font-bold">${s.x}</div></div><div class="border border-dashed rounded-lg px-6 py-3"><div class="text-xs">${cur+1}/${arr.length}</div></div>`;
-document.getElementById('info').innerHTML=`Line: for loop • Iteration ${cur+1} of ${arr.length}`;
-document.getElementById('steps').innerHTML=arr.map((a,i)=>`<div onclick="cur=${i};show()" class="cursor-pointer border ${i==cur?'border-black bg-black text-white':'border-gray-200'} rounded-full px-4 py-2 text-sm flex justify-between"><span>Step ${i+1}: i=${a.i} → x=${a.x}</span><span>${i==cur?'●':''}</span></div>`).join('');
+return s+'; log("'+s.replace(/"/g,"'")+'");';
+}).join('\n');
+new Function('mem','out','log', exec)(mem,out,log);
+}catch(e){ log("Error "+e.message); }
+trace=tr; cur=0; render();
 }
+function render(){
+if(!trace.length) return;
+let s=trace[cur];
+document.getElementById('cnt').innerText=`${cur+1}/${trace.length}`;
+document.getElementById('mem').innerHTML=Object.entries(s.mem).map(([k,v])=>`<div class="bg-[#111] border border-gray-800 rounded-xl px-4 py-2"><div class="text-[9px] text-gray-500">${k}</div><div class="font-bold font-mono">${Array.isArray(v)?'['+v+']':v}</div></div>`).join('')||'<span class="text-xs text-gray-500">Start</span>';
+document.getElementById('out').innerHTML=s.out.length? s.out.map(o=>`> ${Array.isArray(o)?'['+o+']':o}`).join('<br>') : '> ...';
+document.getElementById('steps').innerHTML=trace.map((t,i)=>`<div onclick="cur=${i};render()" class="cursor-pointer flex justify-between px-3 py-2 rounded-full text-xs ${i==cur?'bg-white text-black':'border border-gray-800 text-gray-400'}"><span>${i+1}. ${t.line}</span><span>${Object.entries(t.mem).slice(0,2).map(([k,v])=>`${k}=${v}`).join(' ')}</span></div>`).join('');
+}
+function prev(){if(cur>0){cur--; render();}}
+function next(){if(cur<trace.length-1){cur++; render();}}
+function auto(){let i=0; let tm=setInterval(()=>{cur=i; render(); i++; if(i>=trace.length) clearInterval(tm);},700);}
 </script>
 </body>
 </html>
