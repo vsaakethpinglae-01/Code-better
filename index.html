@@ -1,72 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CodeMama - No API Needed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeMama</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0f0f0f] text-white min-h-screen p-3">
-<div class="max-w-6xl mx-auto">
-<h1 class="text-xl font-bold text-center">CodeMama - Understand Code Like Story ❤️</h1>
-<p class="text-center text-gray-400 text-xs">100% Free - No API Key Needed</p>
+<body class="bg-white text-black">
+<div class="max-w-5xl mx-auto p-4">
+<h1 class="text-2xl font-black tracking-tight">codemama<span class="font-light">.visual</span></h1>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-<div class="bg-[#1a1a1a] p-3 rounded-xl">
-<select id="lang" class="bg-black border p-2 rounded text-xs"><option>Python</option><option>JavaScript</option></select>
-<textarea id="code" class="w-full h-64 bg-black p-3 font-mono text-xs rounded border border-gray-700 mt-2">for i in range(3):
-    print(i)
-    x = i * 2</textarea>
-<button onclick="runTutor()" class="w-full bg-white text-black p-3 rounded-lg mt-3 font-bold">Visualize & Learn →</button>
+<div class="grid md:grid-cols-2 gap-6 mt-6">
+<div>
+<select id="lang" class="border border-black rounded-full px-4 py-2 text-sm w-full">
+<option>Python</option><option>JavaScript</option><option>Java</option><option>C++</option><option>C</option>
+</select>
+<textarea id="code" class="w-full h-80 mt-3 border border-black rounded-xl p-4 font-mono text-sm">for i in range(5):
+    x = i * 2
+    print(x)</textarea>
+<button onclick="run()" class="mt-3 w-full bg-black text-white rounded-full py-3 font-bold">VISUALIZE →</button>
 </div>
 
-<div class="space-y-3">
-<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-green-400 text-sm">🎬 Memory Movie (Live Animation)</h3><div id="steps" class="mt-2 text-xs">Click Visualize...</div></div>
-<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-yellow-400 text-sm">💡 Concepts + Telugu Story</h3><div id="concepts" class="mt-2 text-xs">...</div></div>
-<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-purple-400 text-sm">🎯 Similar Problems</h3><div id="problems" class="mt-2 text-xs">...</div></div>
-<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-pink-400 text-sm">🧠 Your Turn</h3><div id="interview" class="mt-2 text-xs">...</div></div>
+<div>
+<div class="border border-black rounded-xl p-4">
+<div id="mem" class="flex gap-3"></div>
+<div id="info" class="mt-4 font-mono text-xs text-gray-500"></div>
+</div>
+<div id="steps" class="mt-4 space-y-2"></div>
 </div>
 </div>
 </div>
 
 <script>
-function runTutor(){
-const code=document.getElementById('code').value;
-// SIMPLE PARSER FOR FOR LOOPS - WORKS WITHOUT AI
-let steps=[];
-let match = code.match(/range\((\d+)\)/);
-let n = match ? parseInt(match[1]) : 3;
-
-for(let i=0;i<n;i++){
-steps.push({
-step:i+1,
-line:`for i in range(${n}): -> i = ${i}`,
-memory:`i = ${i} , x = ${i*2}`,
-story_en:`We created a box named 'i' and put ${i} inside. x becomes ${i*2}`,
-story_te:`i ane dabba create chesi ${i} pettamu. x value ${i*2} ayindi`
-});
+let cur=0, arr=[];
+function run(){
+let code=document.getElementById('code').value;
+let n=(code.match(/range\((\d+)\)/)||code.match(/<\s*(\d+)/)||[0,5])[1];
+n=parseInt(n);
+arr=[];
+for(let i=0;i<n;i++) arr.push({i,x:i*2});
+cur=0; show();
 }
-
-document.getElementById('steps').innerHTML = steps.map(s=>`
-<div class="bg-black p-2 rounded border border-gray-800 mb-2">
-<div class="flex gap-2"><div class="bg-gray-800 px-2 py-1 rounded">Step ${s.step}</div><div class="text-green-300">${s.line}</div></div>
-<div class="mt-1">🧠 Memory: <span class="text-cyan-300 font-bold">${s.memory}</span></div>
-<div class="text-[11px] text-gray-400">EN: ${s.story_en}<br>TE: ${s.story_te}</div>
-<div class="mt-1"><div class="flex gap-1">${Array(n).fill(0).map((_,k)=>`<div class="w-6 h-6 border ${k==s.step-1?'bg-green-600':''} flex items-center justify-center text-[10px]">${k}</div>`).join('')}</div></div>
-</div>
-`).join('');
-
-document.getElementById('concepts').innerHTML = `
-<b>For Loop:</b> Repeats code ${n} times.<br><span class="text-gray-400">Telugu: Code ni ${n} sarlu repeat chestundi - i value prati sari marutundi.</span><br><br>
-<b>Variable 'x':</b> x = i*2 means double of i.<br><span class="text-gray-400">Telugu: i ki rendu retlu chesi x lo pedutunnam.</span>
-`;
-
-document.getElementById('problems').innerHTML = `
-1. Print numbers from ${n} to 1 reverse<br>
-2. Print only even numbers upto ${n*2}<br>
-3. Find sum of i and x for all steps<br>
-4. What if range(${n}) -> range(${n+2})? Try!
-`;
-
-document.getElementById('interview').innerHTML = `<b>Question: If we change range(${n}) to range(${n+2}), what will be last value of x? Type answer:</b><br><input class="w-full bg-black border p-2 rounded mt-2 text-xs" placeholder="Your answer..."><button onclick="alert('Correct! Last x = '+((${n+1})*2)+' . Great job!')" class="bg-pink-600 px-3 py-1 rounded mt-2 text-xs">Check Answer</button>`;
+function show(){
+let s=arr[cur];
+document.getElementById('mem').innerHTML=`<div class="border border-black rounded-lg px-6 py-3"><div class="text-xs">i</div><div class="text-2xl font-bold">${s.i}</div></div><div class="bg-black text-white rounded-lg px-6 py-3"><div class="text-xs opacity-60">x</div><div class="text-2xl font-bold">${s.x}</div></div><div class="border border-dashed rounded-lg px-6 py-3"><div class="text-xs">${cur+1}/${arr.length}</div></div>`;
+document.getElementById('info').innerHTML=`Line: for loop • Iteration ${cur+1} of ${arr.length}`;
+document.getElementById('steps').innerHTML=arr.map((a,i)=>`<div onclick="cur=${i};show()" class="cursor-pointer border ${i==cur?'border-black bg-black text-white':'border-gray-200'} rounded-full px-4 py-2 text-sm flex justify-between"><span>Step ${i+1}: i=${a.i} → x=${a.x}</span><span>${i==cur?'●':''}</span></div>`).join('');
 }
 </script>
 </body>
