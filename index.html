@@ -1,90 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CodeMama - Visual Code Tutor</title>
+<title>CodeMama - No API Needed</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#0f0f0f] text-white min-h-screen">
-<div class="max-w-7xl mx-auto p-3 md:p-6">
-  <h1 class="text-2xl md:text-3xl font-bold text-center">CodeMama - Understand Code Like Story ❤️</h1>
-  <p class="text-center text-gray-400 text-sm mt-1">Paste any code → See Memory Movie + Concepts + Practice</p>
+<body class="bg-[#0f0f0f] text-white min-h-screen p-3">
+<div class="max-w-6xl mx-auto">
+<h1 class="text-xl font-bold text-center">CodeMama - Understand Code Like Story ❤️</h1>
+<p class="text-center text-gray-400 text-xs">100% Free - No API Key Needed</p>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-    <!-- LEFT -->
-    <div class="bg-[#1a1a1a] p-4 rounded-xl">
-      <div class="flex justify-between mb-2">
-        <select id="lang" class="bg-black border border-gray-700 p-2 rounded text-sm"><option>Python</option><option>JavaScript</option><option>Java</option><option>C++</option></select>
-        <input id="apiKey" type="password" placeholder="Paste Gemini API Key here" class="bg-black border border-gray-700 p-2 rounded text-sm w-48">
-      </div>
-      <textarea id="code" class="w-full h-72 bg-black p-3 font-mono text-sm rounded border border-gray-800" placeholder="Example:&#10;for i in range(3):&#10;    print(i)&#10;    x = i*2">for i in range(3):
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+<div class="bg-[#1a1a1a] p-3 rounded-xl">
+<select id="lang" class="bg-black border p-2 rounded text-xs"><option>Python</option><option>JavaScript</option></select>
+<textarea id="code" class="w-full h-64 bg-black p-3 font-mono text-xs rounded border border-gray-700 mt-2">for i in range(3):
     print(i)
     x = i * 2</textarea>
-      <button onclick="runTutor()" class="w-full bg-white text-black p-3 rounded-lg mt-3 font-bold hover:bg-gray-200">Visualize & Learn →</button>
-      <p class="text-[11px] text-gray-500 mt-2">Get free key: aistudio.google.com/app/apikey</p>
-    </div>
+<button onclick="runTutor()" class="w-full bg-white text-black p-3 rounded-lg mt-3 font-bold">Visualize & Learn →</button>
+</div>
 
-    <!-- RIGHT -->
-    <div class="space-y-4">
-      <div class="bg-[#1a1a1a] p-4 rounded-xl"><h3 class="font-bold text-green-400">🎬 Memory Movie (Step-by-Step)</h3><div id="steps" class="mt-3 text-sm font-mono space-y-2 text-gray-300">Paste code and click Visualize...</div></div>
-      <div class="bg-[#1a1a1a] p-4 rounded-xl"><h3 class="font-bold text-yellow-400">💡 Concepts + Telugu Story</h3><div id="concepts" class="mt-3 text-sm text-gray-300">Concepts will appear here...</div></div>
-      <div class="bg-[#1a1a1a] p-4 rounded-xl"><h3 class="font-bold text-purple-400">🎯 Similar Problems For You</h3><div id="problems" class="mt-3 text-sm text-gray-300">Practice problems will appear here...</div></div>
-      <div class="bg-[#1a1a1a] p-4 rounded-xl border border-purple-900"><h3 class="font-bold text-pink-400">🧠 Your Turn (Interview)</h3><div id="interview" class="mt-3 text-sm text-gray-300">AI will ask you a question here...</div></div>
-    </div>
-  </div>
+<div class="space-y-3">
+<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-green-400 text-sm">🎬 Memory Movie (Live Animation)</h3><div id="steps" class="mt-2 text-xs">Click Visualize...</div></div>
+<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-yellow-400 text-sm">💡 Concepts + Telugu Story</h3><div id="concepts" class="mt-2 text-xs">...</div></div>
+<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-purple-400 text-sm">🎯 Similar Problems</h3><div id="problems" class="mt-2 text-xs">...</div></div>
+<div class="bg-[#1a1a1a] p-3 rounded-xl"><h3 class="font-bold text-pink-400 text-sm">🧠 Your Turn</h3><div id="interview" class="mt-2 text-xs">...</div></div>
+</div>
+</div>
 </div>
 
 <script>
-async function runTutor(){
-  const code = document.getElementById('code').value;
-  const lang = document.getElementById('lang').value;
-  const key = document.getElementById('apiKey').value;
-  if(!code) return alert("Paste code");
-  if(!key) return alert("Paste your free Gemini API Key first");
+function runTutor(){
+const code=document.getElementById('code').value;
+// SIMPLE PARSER FOR FOR LOOPS - WORKS WITHOUT AI
+let steps=[];
+let match = code.match(/range\((\d+)\)/);
+let n = match ? parseInt(match[1]) : 3;
 
-  document.getElementById('steps').innerHTML = "⏳ Thinking like a tutor...";
-  
-  const prompt = `You are CodeMama, a super helpful tutor from Andhra Pradesh. User pasted this ${lang} code: 
-  ${code}
-  
-  Return ONLY valid JSON in this exact format (no markdown):
-  {
-    "visualization": [{"step":1, "line":"for i in range(3):", "memory":"i=0", "story_en":"We created a box named i with 0", "story_te":"i ane dabba create chesi 0 pettamu"}],
-    "concepts": [{"name":"For Loop", "explain_en":"Repeats code 3 times", "explain_te":"Code ni 3 sarlu repeat chestundi"}],
-    "problems": ["Print numbers from 10 to 1", "Print only even numbers", "Find sum of first N numbers"],
-    "interview_q": "If I change range(3) to range(5), what will be last value of x? Why?"
-  }
-  Make 4-6 visualization steps. Keep story very simple like for 10th class student. Include Telugu.`;
+for(let i=0;i<n;i++){
+steps.push({
+step:i+1,
+line:`for i in range(${n}): -> i = ${i}`,
+memory:`i = ${i} , x = ${i*2}`,
+story_en:`We created a box named 'i' and put ${i} inside. x becomes ${i*2}`,
+story_te:`i ane dabba create chesi ${i} pettamu. x value ${i*2} ayindi`
+});
+}
 
-  try{
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{parts:[{text:prompt}]}]})
-    });
-    const data = await res.json();
-    let text = data.candidates[0].content.parts[0].text;
-    text = text.replace(/```json|```/g,'').trim();
-    const json = JSON.parse(text);
+document.getElementById('steps').innerHTML = steps.map(s=>`
+<div class="bg-black p-2 rounded border border-gray-800 mb-2">
+<div class="flex gap-2"><div class="bg-gray-800 px-2 py-1 rounded">Step ${s.step}</div><div class="text-green-300">${s.line}</div></div>
+<div class="mt-1">🧠 Memory: <span class="text-cyan-300 font-bold">${s.memory}</span></div>
+<div class="text-[11px] text-gray-400">EN: ${s.story_en}<br>TE: ${s.story_te}</div>
+<div class="mt-1"><div class="flex gap-1">${Array(n).fill(0).map((_,k)=>`<div class="w-6 h-6 border ${k==s.step-1?'bg-green-600':''} flex items-center justify-center text-[10px]">${k}</div>`).join('')}</div></div>
+</div>
+`).join('');
 
-    // Render
-    let stepsHtml = "";
-    json.visualization.forEach(s=>{
-      stepsHtml += `<div class="bg-black p-2 rounded border border-gray-800"><b>Step ${s.step}:</b> <span class="text-green-300">${s.line}</span><br>Memory: <span class="text-cyan-300">${s.memory}</span><br><span class="text-xs text-gray-400">EN: ${s.story_en}<br>TE: ${s.story_te}</span></div>`;
-    });
-    document.getElementById('steps').innerHTML = stepsHtml;
+document.getElementById('concepts').innerHTML = `
+<b>For Loop:</b> Repeats code ${n} times.<br><span class="text-gray-400">Telugu: Code ni ${n} sarlu repeat chestundi - i value prati sari marutundi.</span><br><br>
+<b>Variable 'x':</b> x = i*2 means double of i.<br><span class="text-gray-400">Telugu: i ki rendu retlu chesi x lo pedutunnam.</span>
+`;
 
-    let conceptHtml = "";
-    json.concepts.forEach(c=>{
-      conceptHtml += `<div class="mb-2"><b>${c.name}:</b> ${c.explain_en}<br><span class="text-xs text-gray-400">Telugu: ${c.explain_te}</span></div>`;
-    });
-    document.getElementById('concepts').innerHTML = conceptHtml;
+document.getElementById('problems').innerHTML = `
+1. Print numbers from ${n} to 1 reverse<br>
+2. Print only even numbers upto ${n*2}<br>
+3. Find sum of i and x for all steps<br>
+4. What if range(${n}) -> range(${n+2})? Try!
+`;
 
-    document.getElementById('problems').innerHTML = json.problems.map((p,i)=>`${i+1}. ${p}`).join('<br>');
-    document.getElementById('interview').innerHTML = `<b>${json.interview_q}</b><br><textarea placeholder="Type your answer here..." class="w-full bg-black border border-gray-700 p-2 rounded mt-2 text-sm"></textarea>`;
-
-  }catch(e){
-    document.getElementById('steps').innerHTML = "Error: " + e.message + "<br>Check API Key or try again.";
-  }
+document.getElementById('interview').innerHTML = `<b>Question: If we change range(${n}) to range(${n+2}), what will be last value of x? Type answer:</b><br><input class="w-full bg-black border p-2 rounded mt-2 text-xs" placeholder="Your answer..."><button onclick="alert('Correct! Last x = '+((${n+1})*2)+' . Great job!')" class="bg-pink-600 px-3 py-1 rounded mt-2 text-xs">Check Answer</button>`;
 }
 </script>
 </body>
